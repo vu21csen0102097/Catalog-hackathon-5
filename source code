@@ -1,0 +1,59 @@
+package com.electronicvoting.system;
+
+
+import java.util.Scanner;
+
+public class VotingSystem {
+    private static int votes = 0;
+    private static boolean hasVoted = false;
+
+    public static void main(String[] args) {
+        Scanner scanner = new Scanner(System.in);
+
+        System.out.println("Welcome to the Electronic Voting System");
+
+        String aadharNumber;
+        while (true) {
+            System.out.print("Enter your Aadhar card number: ");
+            aadharNumber = scanner.nextLine().trim();
+
+            if (isValidAadhar(aadharNumber)) {
+                break;
+            } else {
+                System.out.println("Invalid Aadhar card number. Please enter a valid Aadhar card number.");
+            }
+        }
+
+        if (hasVoted) {
+            System.out.println("The voter has already cast their vote.");
+            scanner.close();
+            return;
+        }
+
+        while (true) {
+            System.out.println("Vote for your choice (enter '1' for Option 1 or '2' for Option 2): ");
+            int vote = scanner.nextInt();
+
+            if (vote == 1 || vote == 2) {
+                castVote(vote);
+                System.out.println("Vote cast successfully.");
+                break;
+            } else {
+                System.out.println("Invalid vote. Please enter a valid option.");
+            }
+        }
+
+        scanner.close();
+    }
+
+    private static boolean isValidAadhar(String aadharNumber) {
+        return aadharNumber.matches("\\d{12}");
+    }
+
+    private static synchronized void castVote(int vote) {
+        if (!hasVoted) {
+            votes++;
+            hasVoted = true;
+        }
+    }
+}
